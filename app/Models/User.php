@@ -6,9 +6,15 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use Laravel\Sanctum\HasApiTokens;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use Illuminate\Support\Facades\Storage;
+
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +22,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password', 'role', 'avatar', 'phone', 'address', 
+        'longitude', 'latitude', 'tagline', 'header_image', 'kyc_completed', 'national_identification_no', 
+        'national_identification_front', 'national_identification_back', 'passport_number', 'business_registration_no',
+        'business_registration_cert', 'recent_bank_statement'
     ];
 
     /**
@@ -51,4 +60,38 @@ class User extends Authenticatable
     {
         return 'https://www.gravatar.com/avatar/' . md5($this->email);
     }
+
+    
+    public function getAvatarUrl()
+    {
+        return Storage::url($this->avatar);
+    }
+
+    public function getHeaderImageUrl()
+    {
+        return Storage::url($this->header_image);
+    }
+
+    public function getNationalIdentificationPicFrontUrl()
+    {
+        return Storage::url($this->national_identification_front);
+    }
+
+    public function getNationalIdentificationPicBackUrl()
+    {
+        return Storage::url($this->national_identification_back);
+    }
+
+    public function getBusinessRegistrationCertUrl()
+    {
+        return Storage::url($this->business_registration_cert);
+    }
+
+    public function getRecentBankStatmtUrl()
+    {
+        return Storage::url($this->recent_bank_statement);
+    }
+
+
+
 }

@@ -52,4 +52,8 @@ class OrderController extends Controller
         ]);
         return 'success';
     }
+
+    public function confirm(){
+        return view('confirm');
+    }
 }

@@ -38,6 +38,7 @@
                 </span>
                 @enderror
             </div>
+            <!--
             <div class="form-group">
                 <label for="warning_quantity">Warning quantity</label>
                 <input type="text" name="warning_quantity" class="form-control @error('warning_quantity') is-invalid @enderror" id="warning_quantity" placeholder="Warning quantity" value="{{ old('warning_quantity', config('settings.warning_quantity')) }}">
@@ -47,6 +48,7 @@
                 </span>
                 @enderror
             </div>
+        -->
             <button type="submit" class="btn btn-primary">Change Setting</button>
         </form>
     </div>

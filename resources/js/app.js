@@ -13,3 +13,5 @@ require('./bootstrap');
  */
 
 require('./components/Cart');
+
+require('./components/CartPurchase');

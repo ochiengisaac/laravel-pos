@@ -11,7 +11,7 @@
 @section('content')
 <div class="card product-list">
     <div class="card-body">
-        <table class="table">
+        <table class="table datatable">
             <thead>
                 <tr>
                     <th>ID</th>

@@ -14,6 +14,7 @@ try {
 
     require("bootstrap");
     require("admin-lte");
+    require('datatables.net');
 } catch (e) {}
 
 /**

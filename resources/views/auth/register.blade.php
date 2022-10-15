@@ -12,6 +12,23 @@
                         @csrf
 
                         <div class="form-group row">
+                            <label for="role" class="col-md-4 col-form-label text-md-right">{{ __('Account type') }}</label>
+
+                            <div class="col-md-6">                                
+                                    <select required name="role" class="form-control @error('role') is-invalid @enderror" id="role" autofocus>
+                                        <option value="">Select account type</option>
+                                        <option value="merchant" @if (old('role') == "merchant") {{ 'selected' }} @endif>Merchant</option>
+                                        <option value="supplier" @if (old('role') == "supplier") {{ 'selected' }} @endif>Supplier</option>
+                                    </select>
+                                @error('role')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">

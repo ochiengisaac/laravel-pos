@@ -11,7 +11,26 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <script>
+        $(document).ready(function() {
+      
+          setTimeout(function() {
+                      // [ Zero Configuration ] start
+                      $('.datatable').DataTable({
+                          "paging": false,
+                          dom: 'Bfrtip',
+                          buttons: [
+                              'copyHtml5',
+                              'excelHtml5',
+                              'csvHtml5',
+                              'pdfHtml5'
+                          ],
+                          responsive: true
+                      });
+                  }, 350);
+        });
+      
+        </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">

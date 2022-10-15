@@ -60,7 +60,8 @@ class ProductController extends Controller
             'barcode' => $request->barcode,
             'price' => $request->price,
             'quantity' => $request->quantity,
-            'status' => $request->status
+            'status' => $request->status,
+            'user_id' => auth()->user()->id
         ]);
 
         if (!$product) {
