@@ -5,7 +5,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                  <h3>{{$orders_count}}</h3>
+                  <h3>{{$outgoingOrdersCount}}</h3>
                 <p>Orders Count</p>
               </div>
               <div class="icon">
@@ -19,7 +19,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                  <h3>{{config('settings.currency_symbol')}} {{number_format($income, 2)}}</h3>
+                  <h3>{{config('settings.currency_symbol')}} {{number_format($total_sales, 2)}}</h3>
                 <p>Income</p>
               </div>
               <div class="icon">
@@ -33,7 +33,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>{{config('settings.currency_symbol')}} {{number_format($income_today, 2)}}</h3>
+                <h3>{{config('settings.currency_symbol')}} {{number_format($incomeToday, 2)}}</h3>
 
                 <p>Income Today</p>
               </div>
@@ -48,17 +48,19 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>{{$customers_count}}</h3>
+                <h3>{{$customersCount}}</h3>
 
                 <p>Customers Count</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="{{ route('customers.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ route('contacts.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
     </div>
+
+
 </div>
 @endsection

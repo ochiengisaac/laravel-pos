@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\AllAccountDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +24,14 @@ Route::post('/register', 'AuthController@register');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', 'AuthController@me');
+    Route::get('/analytics', 'AnalyticsController@index');
+    Route::get('/allAccountsData', 'AllAccountDataController@index');
+    Route::post('/postContact', 'AllAccountDataController@postContact');
+    Route::post('/putContact', 'AllAccountDataController@putContact');
+    Route::post('/postPurchase', 'AllAccountDataController@postPurchase');
+    Route::post('/postSale', 'AllAccountDataController@postSale');
+    Route::put('/putPurchase/{purchase_id}', 'AllAccountDataController@putPurchase');
+    Route::put('/putSale', 'AllAccountDataController@putSale');
 });
 
 /*

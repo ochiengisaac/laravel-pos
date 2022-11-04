@@ -14,12 +14,22 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     @yield('css')
+    <link  href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap.min.css" rel="stylesheet">
     <script>
         window.APP = <?php echo json_encode([
                             'currency_symbol' => config('settings.currency_symbol'),
                             'warning_quantity' => config('settings.warning_quantity')
                         ]) ?>
     </script>
+
+    <style>
+        table {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -65,6 +75,28 @@
     <!-- ./wrapper -->
 
     <script src="{{ asset('js/app.js') }}"></script>
+    
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+    <script>
+            $(document).ready(function() {
+                        // [ Zero Configuration ] start
+                        $('.dataTable').DataTable({
+                            "paging": false,
+                            dom: 'Bfrtip',
+                            buttons: [
+                                'copyHtml5',
+                                'excelHtml5',
+                                'csvHtml5',
+                                'pdfHtml5'
+                            ],
+                            responsive: true
+                        });
+            });
+
+        
+    </script>
     @yield('js')
 </body>
 

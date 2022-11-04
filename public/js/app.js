@@ -2464,7 +2464,7 @@ var Cart = /*#__PURE__*/function (_Component) {
                 onChange: this.setCustomerId,
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
                   value: "",
-                  children: "Walking Customer"
+                  children: "Guest Customer"
                 }), customers.map(function (cus) {
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
                     value: cus.id,
@@ -2689,7 +2689,7 @@ var CartPurchase = /*#__PURE__*/function (_Component) {
     key: "loadSuppliers",
     value: function loadSuppliers() {
       var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/admin/suppliers/active").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/admin/supplier_contacts").then(function (res) {
         var suppliers = res.data;
         _this2.setState({
           suppliers: suppliers
@@ -2940,7 +2940,7 @@ var CartPurchase = /*#__PURE__*/function (_Component) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
         className: "row",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
-          className: "col-md-6 col-lg-4",
+          className: "col-md-6 col-lg-6",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
             className: "row mb-2",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
@@ -2962,7 +2962,7 @@ var CartPurchase = /*#__PURE__*/function (_Component) {
                 onChange: this.setSupplierId,
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
                   value: "",
-                  children: "Walking Supplier"
+                  children: "--Select Supplier--"
                 }), suppliers.map(function (cus) {
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
                     value: cus.id,
@@ -3034,11 +3034,15 @@ var CartPurchase = /*#__PURE__*/function (_Component) {
               className: "col",
               children: "Expected delivery date:"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
-              className: "col text-left",
+              className: "col text-left pl-0",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", {
                 type: "date",
                 id: "expected_delivery_date",
-                className: "form-control"
+                className: "form-control",
+                value: this.state.expected_delivery_date,
+                onChange: function onChange(event) {
+                  return _this9.setDeliveryDate(event);
+                }
               })
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
@@ -3046,20 +3050,36 @@ var CartPurchase = /*#__PURE__*/function (_Component) {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
               className: "col",
               children: "Subject:"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", {
-              type: "text",
-              id: "subject",
-              className: "form-control",
-              placeholder: "Enter subject..."
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
+              className: "col pl-0",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", {
+                required: true,
+                type: "text",
+                id: "subject",
+                className: "form-control",
+                placeholder: "Enter subject...",
+                value: this.state.subject,
+                onChange: function onChange(event) {
+                  return _this9.setSubject(event);
+                }
+              })
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
             className: "row mb-2",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
               className: "col",
-              children: "Total:"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
-              className: "col text-right",
-              children: [window.APP.currency_symbol, " ", this.getTotal(cart)]
+              children: "Description:"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
+              className: "col pl-0",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("textarea", {
+                id: "description",
+                className: "form-control",
+                placeholder: "Enter Description...",
+                value: this.state.description,
+                onChange: function onChange(event) {
+                  return _this9.setDescription(event);
+                }
+              })
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
             className: "row mb-2",
@@ -3093,7 +3113,7 @@ var CartPurchase = /*#__PURE__*/function (_Component) {
             })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
-          className: "col-md-6 col-lg-8",
+          className: "col-md-6 col-lg-6",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
             className: "mb-2",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", {

@@ -13,6 +13,18 @@
                 @method('PUT')
 
                 <div class="form-group">
+                    <label for="business_name">Business Name</label>
+                    <input type="text" name="business_name" class="form-control @error('business_name') is-invalid @enderror"
+                           id="business_name"
+                           placeholder="Business Name" value="{{ old('business_name', $merchant->business_name) }}">
+                    @error('business_name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
                     <label for="first_name">First Name</label>
                     <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
                            id="first_name"

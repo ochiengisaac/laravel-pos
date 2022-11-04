@@ -88,6 +88,7 @@ class MerchantController extends Controller
      */
     public function update(Request $request, User $merchant)
     {
+        $merchant->business_name = $request->business_name;
         $merchant->first_name = $request->first_name;
         $merchant->last_name = $request->last_name;
         $merchant->email = $request->email;

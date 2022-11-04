@@ -215,7 +215,7 @@ class Cart extends Component {
                                 className="form-control"
                                 onChange={this.setCustomerId}
                             >
-                                <option value="">Walking Customer</option>
+                                <option value="">Guest Customer</option>
                                 {customers.map(cus => (
                                     <option
                                         key={cus.id}

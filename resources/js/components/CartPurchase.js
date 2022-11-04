@@ -43,7 +43,7 @@ class CartPurchase extends Component {
     }
 
     loadSuppliers() {
-        axios.get(`/admin/suppliers/active`).then(res => {
+        axios.get(`/admin/supplier_contacts`).then(res => {
             const suppliers = res.data;
             this.setState({ suppliers });
         });
@@ -85,6 +85,7 @@ class CartPurchase extends Component {
                 });
         }
     }
+
     handleChangeQty(product_id, qty) {
         const cart = this.state.cart.map(c => {
             if (c.id === product_id) {
@@ -107,6 +108,7 @@ class CartPurchase extends Component {
         const total = cart.map(c => c.pivot.quantity * c.price);
         return sum(total).toFixed(2);
     }
+
     handleClickDelete(product_id) {
         axios
             .post("/admin/cart2/delete", { product_id, _method: "DELETE" })
@@ -115,15 +117,18 @@ class CartPurchase extends Component {
                 this.setState({ cart });
             });
     }
+
     handleEmptyCart() {
         axios.post("/admin/cart2/empty", { _method: "DELETE" }).then(res => {
             this.setState({ cart: [] });
         });
     }
+
     handleChangeSearch(event) {
         const search = event.target.value;
         this.setState({ search });
     }
+
     handleSeach(event) {
         if (event.keyCode === 13) {
             this.loadProducts(event.target.value);
@@ -214,7 +219,7 @@ class CartPurchase extends Component {
         const { cart, products, suppliers, barcode, subject, description, expected_delivery_date } = this.state;
         return (
             <div className="row">
-                <div className="col-md-6 col-lg-4">
+                <div className="col-md-6 col-lg-6">
                     <div className="row mb-2">
                         <div className="col">
                             <form onSubmit={this.handleScanBarcode}>
@@ -232,7 +237,7 @@ class CartPurchase extends Component {
                                 className="form-control"
                                 onChange={this.setSupplierId}
                             >
-                                <option value="">Walking Supplier</option>
+                                <option value="">--Select Supplier--</option>
                                 {suppliers.map(cus => (
                                     <option
                                         key={cus.id}
@@ -300,26 +305,51 @@ class CartPurchase extends Component {
                     </div>
                     <div className="row mb-2">
                         <div className="col">Expected delivery date:</div>
-                        <div className="col text-left">
+                        <div className="col text-left pl-0">
                         <input
                             type="date" id="expected_delivery_date"
                             className="form-control"
+                            value={this.state.expected_delivery_date}
+                            onChange={event =>
+                                this.setDeliveryDate(
+                                    event
+                                )
+                            }
                         />
                         </div>
                     </div>
                     <div className="row mb-2">
                         <div className="col">Subject:</div>
+                        <div className="col pl-0">
                         <input
+                            required
                             type="text"
                             id="subject"
                             className="form-control"
                             placeholder="Enter subject..."
+                            value={this.state.subject}
+                            onChange={event =>
+                                this.setSubject(
+                                    event
+                                )
+                            }
                         />
+                        </div>
                     </div>
                     <div className="row mb-2">
-                        <div className="col">Total:</div>
-                        <div className="col text-right">
-                            {window.APP.currency_symbol} {this.getTotal(cart)}
+                        <div className="col">Description:</div>
+                        <div className="col pl-0">
+                            <textarea
+                                id="description"
+                                className="form-control"
+                                placeholder="Enter Description..."
+                                value={this.state.description}
+                                onChange={event =>
+                                    this.setDescription(
+                                        event
+                                    )
+                                }
+                            />
                         </div>
                     </div>
                     <div className="row mb-2">
@@ -351,7 +381,7 @@ class CartPurchase extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6 col-lg-8">
+                <div className="col-md-6 col-lg-6">
                     <div className="mb-2">
                         <input
                             type="text"

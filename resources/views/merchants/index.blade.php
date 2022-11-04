@@ -11,11 +11,12 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <table class="table">
+            <table class="table dataTable display">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Logo/Avatar</th>
+                    <th>Title</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
@@ -32,6 +33,7 @@
                         <td>
                             <img width="50" src="{{$merchant->getAvatarUrl()}}" alt="">
                         </td>
+                        <td>{{$merchant->business_name}}</td>
                         <td>{{$merchant->first_name}}</td>
                         <td>{{$merchant->last_name}}</td>
                         <td>{{$merchant->email}}</td>

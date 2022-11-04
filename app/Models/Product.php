@@ -13,6 +13,8 @@ class Product extends Model
         'barcode',
         'price',
         'quantity',
-        'status'
+        'status',
+        'user_id',
+        'account_id'
     ];
 }

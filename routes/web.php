@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartController2;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MerchantController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\HomeController;
@@ -15,8 +15,16 @@ use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', [LandingPageController::class, 'index'])->name('landingPage');
-Route::post('/initialize_payment', [OrderController::class, 'confirm']);
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('admin/');
+    }
+    return redirect()->route('login');
+    //return view('welcome');
+});
+
+//Route::get('/', [LandingPageController::class, 'index'])->name('landingPage');
+//Route::post('/initialize_payment', [OrderController::class, 'confirm']);
 
 Auth::routes();
 
@@ -25,23 +33,26 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
     Route::resource('products', ProductController::class);
-    Route::resource('customers', CustomerController::class);
+    
+    
     
     Route::get('/suppliers/active', [SupplierController::class, 'active_suppliers'])->name('suppliers.active');
     Route::get('/suppliers/inactive', [SupplierController::class, 'inactive_suppliers'])->name('suppliers.inactive');
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
     Route::resource('suppliers', SupplierController::class);
     
+    
     Route::get('/merchants/active', [MerchantController::class, 'active_merchants'])->name('merchants.active');
     Route::get('/merchants/inactive', [MerchantController::class, 'inactive_merchants'])->name('merchants.inactive');
     Route::get('/merchants', [MerchantController::class, 'index'])->name('merchants.index');
     Route::resource('merchants', MerchantController::class);
-
-
-    Route::resource('accounts', AccountController::class);
+    
+    Route::resource('purchases', PurchaseOrderController::class);
     Route::resource('orders', OrderController::class);
 
-    Route::resource('purchases', PurchaseOrderController::class);
+    Route::get('/supplier_contacts', [ContactController::class, 'suppliers'])->name('supplier.contacts');
+    Route::get('/customer_contacts', [ContactController::class, 'customers'])->name('customer.contacts');
+    Route::resource('contacts', ContactController::class);
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');

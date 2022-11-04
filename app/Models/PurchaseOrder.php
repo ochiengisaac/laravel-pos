@@ -4,15 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Contact;
+use App\Models\PurchaseOrderItem;
+
 class PurchaseOrder extends Model
 {
     protected $fillable = [
-        'merchant_id',
         'supplier_id',
+        'user_id',
+        'expected_delivery_date',
         'subject',
         'description',
-        'expected_delivery_date',
-        'user_id'
+        'deleted'
     ];
 
     public function items()
@@ -25,43 +28,52 @@ class PurchaseOrder extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function merchant()
+    public function customer()
     {
-        return $this->belongsTo(Merchant::class);
+        $customer = null;
+        if($this->customer_id != null){
+            $customer = Contact::where("deleted", "=", 0)->where("id", "=", $this->customer_id)->first();
+
+        }
+        return $customer;
     }
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class);
+        $supplier = null;
+        if($this->supplier_id != null){
+            $supplier = Contact::where("deleted", "=", 0)->where("id", "=", $this->supplier_id)->first();
+
+        }
+        return $supplier;
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        $user = null;
+        if($this->user_id != null){
+            $user = User::where("id", "=", $this->user_id)->first();
+
+        }
+        return $user;
     }
 
-    public function getMerchantName()
+    public function getCustomerName()
     {
-        if($this->merchant) {
-            return $this->merchant->first_name . ' ' . $this->merchant->last_name;
+        $cust = $this->customer();
+        if($cust) {
+            return $this->cust->first_name . ' ' . $this->cust->last_name;
         }
-        return null;
+        return 'Guest Customer';
     }
 
     public function getSupplierName()
     {
-        if($this->supplier) {
-            return $this->supplier->first_name . ' ' . $this->supplier->last_name;
+        $sup = $this->supplier();
+        if($sup) {
+            return $this->sup->first_name . ' ' . $this->sup->last_name;
         }
-        return null;
-    }
-
-    public function getUserName()
-    {
-        if($this->user) {
-            return $this->user->first_name . ' ' . $this->user->last_name;
-        }
-        return null;
+        return 'Guest Supplier';
     }
 
     public function total()
@@ -76,31 +88,15 @@ class PurchaseOrder extends Model
         return number_format($this->total(), 2);
     }
 
-    public function receivedAmount()
+    public function sumOfPaymentsAmount()
     {
         return $this->payments->map(function ($i){
             return $i->amount;
         })->sum();
     }
 
-    public function formattedReceivedAmount()
+    public function formattedSumOfPaymentsAmount()
     {
-        return number_format($this->receivedAmount(), 2);
+        return number_format($this->sumOfPaymentsAmount(), 2);
     }
-
-    public function updateStatus($status, $reason)
-    {
-        
-        $newStatus = PurchaseOrderStatusType::where('alias', $status)->first();
-        PurchaseOrderStatusTypeChange::create([
-            'user_id' => auth()->user()->id,
-            'purchase_order_id' => $this->id,
-            //'status' => $status,
-            'purchase_order_status_type_id' => $newStatus->id,
-            'description' => $reason
-        ]);
-        $this->purchase_order_status_type_id = $newStatus->id;
-        $this->save();
-    }
-
 }

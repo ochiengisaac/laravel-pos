@@ -29,7 +29,7 @@
                 </form>
             </div>
         </div>
-        <table class="table datatable">
+        <table class="table dataTable display">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -48,19 +48,19 @@
                     <td>{{$order->id}}</td>
                     <td>{{$order->getCustomerName()}}</td>
                     <td>{{ config('settings.currency_symbol') }} {{$order->formattedTotal()}}</td>
-                    <td>{{ config('settings.currency_symbol') }} {{$order->formattedReceivedAmount()}}</td>
+                    <td>{{ config('settings.currency_symbol') }} {{$order->formattedSumOfPaymentsAmount()}}</td>
                     <td>
-                        @if($order->receivedAmount() == 0)
+                        @if($order->sumOfPaymentsAmount() == 0)
                             <span class="badge badge-danger">Not Paid</span>
-                        @elseif($order->receivedAmount() < $order->total())
+                        @elseif($order->sumOfPaymentsAmount() < $order->total())
                             <span class="badge badge-warning">Partial</span>
-                        @elseif($order->receivedAmount() == $order->total())
+                        @elseif($order->sumOfPaymentsAmount() == $order->total())
                             <span class="badge badge-success">Paid</span>
-                        @elseif($order->receivedAmount() > $order->total())
+                        @elseif($order->sumOfPaymentsAmount() > $order->total())
                             <span class="badge badge-info">Change</span>
                         @endif
                     </td>
-                    <td>{{config('settings.currency_symbol')}} {{number_format($order->total() - $order->receivedAmount(), 2)}}</td>
+                    <td>{{config('settings.currency_symbol')}} {{number_format($order->total() - $order->sumOfPaymentsAmount(), 2)}}</td>
                     <td>{{$order->created_at}}</td>
                     <td>
                         <a href="{{ route('orders.edit', $order) }}" class="btn btn-primary"><i
@@ -76,7 +76,7 @@
                     <th></th>
                     <th></th>
                     <th>{{ config('settings.currency_symbol') }} {{ number_format($total, 2) }}</th>
-                    <th>{{ config('settings.currency_symbol') }} {{ number_format($receivedAmount, 2) }}</th>
+                    <th>{{ config('settings.currency_symbol') }} {{ number_format($sumOfPaymentsAmount, 2) }}</th>
                     <th></th>
                     <th></th>
                     <th></th>

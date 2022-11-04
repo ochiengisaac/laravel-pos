@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'New Purchase')
+@section('title', 'Post Purchase')
 
 @section('content')
     <div id="cart2"></div>

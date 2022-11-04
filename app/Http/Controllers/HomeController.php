@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\AllAccountDataController;
+
 use App\Models\Order;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -25,24 +27,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $orders = Order::with(['items', 'payments'])->get();
-        $customers_count = Customer::count();
-
+        $summaryData = AllAccountDataController::getAnalyticsData();        
         return view('home', [
-            'orders_count' => $orders->count(),
-            'income' => $orders->map(function($i) {
-                if($i->receivedAmount() > $i->total()) {
-                    return $i->total();
-                }
-                return $i->receivedAmount();
-            })->sum(),
-            'income_today' => $orders->where('created_at', '>=', date('Y-m-d').' 00:00:00')->map(function($i) {
-                if($i->receivedAmount() > $i->total()) {
-                    return $i->total();
-                }
-                return $i->receivedAmount();
-            })->sum(),
-            'customers_count' => $customers_count
+            'incomingOrders' => $summaryData['incomingOrders'],
+            'outgoingOrders' => $summaryData['outgoingOrders'],
+            'suppliers' => $summaryData['suppliers'],
+            'favoriteSuppliers' => $summaryData['favoriteSuppliers'],
+            'customers' => $summaryData['customers'],
+            'favoriteCustomers' => $summaryData['favoriteCustomers'],
+            'total_purchases' => $summaryData['total_purchases'],
+            'total_sales' => $summaryData['total_sales'],
+            'customersCount' => $summaryData['customersCount'],
+            'suppliersCount' => $summaryData['suppliersCount'],
+            'incomingOrdersCount' => $summaryData['incomingOrdersCount'],
+            'outgoingOrdersCount' => $summaryData['outgoingOrdersCount'],
+            'incomeToday' => $summaryData['incomeToday'],
+            'profitTotal' => $summaryData['profitTotal']
         ]);
     }
 }

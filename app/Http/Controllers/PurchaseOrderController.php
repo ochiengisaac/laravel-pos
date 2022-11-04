@@ -2,75 +2,120 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PurchaseStoreRequest;
+use App\Http\Requests\PurchaseOrderStoreRequest;
+use App\Http\Requests\PurchaseOrderUpdateRequest;
 use App\Models\PurchaseOrder;
-use App\Models\PurchaseOrderStatusTypeChange;
-use App\Models\PurchaseOrderStatusType;
 use Illuminate\Http\Request;
 
 class PurchaseOrderController extends Controller
 {
     public function index(Request $request) {
-        $purchases = new PurchaseOrder();
+        $purchaseOrders = new PurchaseOrder();
         if($request->start_date) {
-            $purchases = $purchases->where('created_at', '>=', $request->start_date);
+            $purchaseOrders = $purchaseOrders->where('created_at', '>=', $request->start_date);
         }
         if($request->end_date) {
-            $purchases = $purchases->where('created_at', '<=', $request->end_date . ' 23:59:59');
+            $purchaseOrders = $purchaseOrders->where('created_at', '<=', $request->end_date . ' 23:59:59');
         }
-        if(auth()->user()->role == "merchant" || auth()->user()->role == "supplier") {
-            $purchases = $purchases->where('user_id', '=', auth()->user()->id);
-        }
-        $purchases = $purchases->with(['items', 'payments', 'supplier', 'user'])->latest()->paginate(10);         
+        $purchaseOrders = $purchaseOrders->with(['items', 'payments'])->latest()->paginate(10);
 
-        $total = $purchases->map(function($i) {
+        $total = $purchaseOrders->map(function($i) {
             return $i->total();
         })->sum();
-
-        $tax_total = 0.16 * $total;
-
-        $receivedAmount = $purchases->map(function($i) {
-            return $i->receivedAmount();
+        $sumOfPaymentsAmount = $purchaseOrders->map(function($i) {
+            return $i->sumOfPaymentsAmount();
         })->sum();
 
-        return view('purchases.index', compact('purchases', 'total', 'tax_total', 'receivedAmount'));
+        return view('purchaseOrders.index', compact('purchaseOrders', 'total', 'sumOfPaymentsAmount'));
     }
 
-    public function store(PurchaseStoreRequest $request)
+    public function store(PurchaseOrderStoreRequest $request)
     {
-        $purchase = PurchaseOrder::create([
+        $purchaseOrder = PurchaseOrder::create([
             'supplier_id' => $request->supplier_id,
-            'merchant_id' => auth()->user()->id,
-            'user_id' => auth()->user()->id,
             'subject' => $request->subject,
             'description' => $request->description,
-            'expected_delivery_date' => $request->expected_delivery_date
+            'expected_delivery_date' => $request->expected_delivery_date,
+            'user_id' => $request->user()->id,
         ]);
 
         $cart = $request->user()->cart()->get();
         foreach ($cart as $item) {
-            $purchase->items()->create([
+            $purchaseOrder->items()->create([
                 'price' => $item->price * $item->pivot->quantity,
                 'quantity' => $item->pivot->quantity,
-                'product_id' => $item->id,
+                'purchaseOrder_id' => $item->id,
+                'product_id' => $item->pivot->product_id,
             ]);
             $item->quantity = $item->quantity - $item->pivot->quantity;
             $item->save();
         }
         $request->user()->cart()->detach();
-        $purchase->payments()->create([
+        $purchaseOrder->payments()->create([
             'amount' => $request->amount,
             'user_id' => $request->user()->id,
         ]);
         return 'success';
     }
 
-    public function statusChange($purchaseOrderId, $status, $reason="")
-    {
-        $purchaseorder = PurchaseOrder::where('id', $purchaseOrderId)->first();
-        $purchaseorder->updateStatus($status, $reason);
 
-        return response()->json(['info' => 'success', 'message' => 'PurchaseOrder ' . $status]);
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\PurchaseOrder  $purchaseOrder
+     * @return \Illuminate\Http\Response
+     */
+    public function show(PurchaseOrder $purchaseOrder)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\PurchaseOrder  $purchaseOrder
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(PurchaseOrder $purchaseOrder)
+    {
+        return view('purchaseOrders.edit')->with('purchaseOrder', $purchaseOrder);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\PurchaseOrder  $purchaseOrder
+     * @return \Illuminate\Http\Response
+     */
+    public function update(PurchaseOrderUpdateRequest $request, PurchaseOrder $purchaseOrder)
+    {
+        $purchaseOrder->name = $request->name;
+        $purchaseOrder->description = $request->description;
+        $purchaseOrder->barcode = $request->barcode;
+        $purchaseOrder->price = $request->price;
+        $purchaseOrder->quantity = $request->quantity;
+        $purchaseOrder->status = $request->status;
+
+        if (!$purchaseOrder->save()) {
+            return redirect()->back()->with('error', 'Sorry, there\'re a problem while updating purchaseOrder.');
+        }
+        return redirect()->route('purchaseOrders.index')->with('success', 'Success, your purchaseOrder have been updated.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\PurchaseOrder  $purchaseOrder
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(PurchaseOrder $purchaseOrder)
+    {
+        $purchaseOrder->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     public function confirm(){

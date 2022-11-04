@@ -47,135 +47,15 @@
                         <li class="nav-item">
                         <a href="{{ route('products.index') }}" class="nav-link {{ (request()->is('admin/products')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>All Products</p>
+                        <?php
+                        $all_active_products_count = App\Models\Product::where("status","=",1)->count();
+                       ?>
+                        <p>All Products<span class="badge badge-info right">{{$all_active_products_count}}</span></p>
                         </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link {{ (request()->is('admin/orders') || request()->is('admin/cart')) ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-basket-shopping"></i>
-                    <p>
-                    Sales
-                    <i class="right fas fa-angle-left"></i>
-                    </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="{{ route('cart.index') }}" class="nav-link {{ (request()->is('admin/cart')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>New Sale</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="{{ route('orders.index') }}" class="nav-link {{ (request()->is('admin/orders'))? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>All Sales</p>
-                        </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link {{ (request()->is('admin/cart2') || request()->is('admin/purchases/awaitapprv') 
-                    || request()->is('admin/purchases/intransit') || request()->is('admin/purchases/onhold')
-                    || request()->is('admin/purchases/completed') ) ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-cart-plus"></i>
-                    <p>
-                    Purchases
-                    <i class="right fas fa-angle-left"></i>
-                    </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('cart2.index') }}" class="nav-link {{ (request()->is('admin/cart2')) ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>New Purchase</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('purchases.index') }}" class="nav-link {{ (request()->is('admin/purchases/awaitapprv'))? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Awaiting Approval</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="{{ route('purchases.index') }}" class="nav-link {{ (request()->is('admin/purchases/intransit'))? 'active' : '' }}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>In Transit</p>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="{{ route('purchases.index') }}" class="nav-link {{ (request()->is('admin/purchases/onhold'))? 'active' : '' }}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>On Hold</p>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="{{ route('purchases.index') }}" class="nav-link {{ (request()->is('admin/purchases/completed'))? 'active' : '' }}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>Completed</p>
-                          </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link {{ (request()->is('admin/customers') || request()->is('admin/customers/create')) ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>
-                        Customers
-                    <i class="right fas fa-angle-left"></i>
-                    </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="{{ route('customers.create') }}" class="nav-link {{ (request()->is('admin/customers/create')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>New Customer</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="{{ route('customers.index') }}" class="nav-link {{ (request()->is('admin/customers')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>All Customers</p>
-                        </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link {{ (request()->is('admin/suppliers') || request()->is('admin/suppliers/active')|| request()->is('admin/suppliers/inactive')) ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>
-                        Suppliers
-                    <i class="right fas fa-angle-left"></i>
-                    </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <!--<li class="nav-item">
-                        <a href="{{ route('suppliers.create') }}" class="nav-link {{ (request()->is('admin/suppliers/create')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>New Supplier</p>
-                        </a>
-                        </li>-->
-                        <li class="nav-item">
-                        <a href="{{ route('suppliers.index') }}" class="nav-link {{ (request()->is('admin/suppliers')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>All Suppliers</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('suppliers.active') }}" class="nav-link {{ (request()->is('admin/suppliers/active')) ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Verified Suppliers</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('suppliers.inactive') }}" class="nav-link {{ (request()->is('admin/suppliers/inactive')) ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Unverified Suppliers</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link {{ (request()->is('admin/merchants') || request()->is('admin/merchants/active')|| request()->is('admin/merchants/inactive')) ? 'active' : '' }}">
                     <i class="nav-icon fas fa-users"></i>
@@ -194,46 +74,78 @@
                         <li class="nav-item">
                         <a href="{{ route('merchants.index') }}" class="nav-link {{ (request()->is('admin/merchants')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>All Merchants</p>
+                        <?php
+                        $all_merch_count = App\Models\User::where("role","=","merchant")->count();
+                       ?>
+                        <p>All Merchants<span class="badge badge-info right">{{$all_merch_count}}</span></p>
                         </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('merchants.active') }}" class="nav-link {{ (request()->is('admin/merchants/active')) ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Verified Merchants</p>
+                            <?php
+                            $verified_merch_count = App\Models\User::where("role","=","merchant")->where("kyc_completed", "=", 1)->count();
+                           ?>
+                            <p>Verified Merchants<span class="badge badge-info right">{{$verified_merch_count}}</span></p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('merchants.inactive') }}" class="nav-link {{ (request()->is('admin/merchants/inactive')) ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Unverified Merchants</p>
+                            <?php
+                            $unverified_merch_count = App\Models\User::where("role","=","merchant")->where("kyc_completed", "=", 0)->count();
+                           ?>
+                            <p>Unverified Merchants<span class="badge badge-info right">{{$unverified_merch_count}}</span></p>
                             </a>
                         </li>
                     </ul>
                 </li>
+
                 <li class="nav-item menu-open">
-                    <a href="#" class="nav-link {{ (request()->is('admin/products') || request()->is('admin/products/create')) ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-chart-pie"></i>
+                    <a href="#" class="nav-link {{ (request()->is('admin/suppliers') || request()->is('admin/suppliers/active')|| request()->is('admin/suppliers/inactive')) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-users"></i>
                     <p>
-                    Reports
+                        Suppliers
                     <i class="right fas fa-angle-left"></i>
                     </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="{{ route('cart.index') }}" class="nav-link active">
+                        <!--<li class="nav-item">
+                        <a href="{{ route('suppliers.create') }}" class="nav-link {{ (request()->is('admin/suppliers/create')) ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>New Sale</p>
+                        <p>New Supplier</p>
+                        </a>
+                        </li>-->
+                        <li class="nav-item">
+                        <a href="{{ route('suppliers.index') }}" class="nav-link {{ (request()->is('admin/suppliers')) ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <?php
+                        $all_suppliers_count = App\Models\User::where("role","=","supplier")->count();
+                       ?>
+                        <p>All Suppliers<span class="badge badge-info right">{{$all_suppliers_count}}</span></p>
                         </a>
                         </li>
                         <li class="nav-item">
-                        <a href="{{ route('orders.index') }}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>All Sales</p>
-                        </a>
+                            <a href="{{ route('suppliers.active') }}" class="nav-link {{ (request()->is('admin/suppliers/active')) ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <?php
+                             $verified_suppliers_count = App\Models\User::where("role","=","supplier")->where("kyc_completed", "=", 1)->count();
+                            ?>
+                            <p>Verified Suppliers<span class="badge badge-info right">{{$verified_suppliers_count}}</span></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('suppliers.inactive') }}" class="nav-link {{ (request()->is('admin/suppliers/inactive')) ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <?php
+                            $unverified_suppliers_count = App\Models\User::where("role","=","supplier")->where("kyc_completed", "=", 0)->count();
+                           ?>
+                            <p>Unverified Suppliers<span class="badge badge-info right">{{$unverified_suppliers_count}}</span></p>
+                            </a>
                         </li>
                     </ul>
                 </li>
+
                 <li class="nav-item has-treeview">
                     <a href="{{ route('settings.index') }}" class="nav-link {{ (request()->is('admin/settings')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cogs"></i>

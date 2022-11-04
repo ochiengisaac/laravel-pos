@@ -25,7 +25,7 @@ class User extends Authenticatable
         'first_name', 'last_name', 'email', 'password', 'role', 'avatar', 'phone', 'address', 
         'longitude', 'latitude', 'tagline', 'header_image', 'kyc_completed', 'national_identification_no', 
         'national_identification_front', 'national_identification_back', 'passport_number', 'business_registration_no',
-        'business_registration_cert', 'recent_bank_statement'
+        'business_registration_cert', 'recent_bank_statement', 'account_id'
     ];
 
     /**

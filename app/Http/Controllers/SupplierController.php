@@ -89,6 +89,7 @@ class SupplierController extends Controller
      */
     public function update(Request $request, User $supplier)
     {
+        $supplier->business_name = $request->business_name;
         $supplier->first_name = $request->first_name;
         $supplier->last_name = $request->last_name;
         $supplier->email = $request->email;

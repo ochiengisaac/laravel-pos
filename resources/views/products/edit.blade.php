@@ -12,6 +12,30 @@
             @csrf
             @method('PUT')
 
+            @if(auth()->user()->role === "admin" || auth()->user()->role === "super-admin")
+            <div class="form-group">
+                <label for="status">Supplier</label>
+                <select name="account_id" class="form-control @error('account_id') is-invalid @enderror" id="account_id">
+                    <option value="">-- Select Supplier --</option>
+
+                    @foreach ($suppliers as $data)
+
+                    <option value="{{$data->id}}"  {{ old('account_id', $product->account_id) === $data->id ? 'selected' : ''}}>
+
+                        {{$data->first_name}} {{$data->last_name}}
+
+                    </option>
+
+                    @endforeach
+                </select>
+                @error('account_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            @endif
+
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name"
